@@ -1,5 +1,8 @@
 import os
 import psutil
+import datetime
+import time
+
 
 class Metrics:
 
@@ -12,7 +15,10 @@ class Metrics:
         self.cpu_usage = 0
         self.cpu_load = 0
         self.ram = 0
-
+        self.tx_bytes = 0
+        self.rx_bytes = 0
+        self.failed_logins = 0
+        self._last_failed_login_time = -1
 
     def _get_num_process(self):
         p = os.popen("ps aux | wc -l")
@@ -21,6 +27,7 @@ class Metrics:
     def _get_num_fds(self):
         p = os.popen("lsof | wc -l")
         self.num_fds = int(p.read())
+        print ("fds: " + str(self.num_fds))
 
     def _get_num_conn(self):
         p = os.popen("netstat -t -u | wc -l")
@@ -50,6 +57,53 @@ class Metrics:
     def _get_ram(self):
         self.ram = psutil.virtual_memory()[2]
 
+    def _get_tx_bytes(self):
+        with open("/sys/class/net/eth0/statistics/tx_bytes", "r") as a_file:
+            self.tx_bytes = int(a_file.read())
+
+        print("tx bytes = " + str(self.tx_bytes))
+
+    def _get_rx_bytes(self):
+        with open("/sys/class/net/eth0/statistics/rx_bytes", "r") as a_file:
+            self.rx_bytes = int(a_file.read())
+
+        print("rx bytes = " + str(self.rx_bytes))
+
+
+    def _get_date_from_log(self, log):
+        '''
+        function to get the timestamp from the date of the log line
+        TODO: The log does not return the year. This function assumes that
+        the year of the log is the same than the year that return the time library.
+        This can led to a wrong behavior when the year changes. Lets assume the happy path by now.
+        '''
+
+        words = log.split()
+        # Considering date is in dd/mm/yyyy format
+        date = str(datetime.datetime.now().year) + " " + words[0] + " " + words[1] + " " + words[2]
+        dt_object1 = datetime.datetime.strptime(date, "%Y %b %d %H:%M:%S")
+
+        seconds = time.mktime(dt_object1.timetuple())
+
+        return seconds
+
+    def _get_failed_logins(self):
+        #read all logs due to a failed login
+        p = os.popen("cat /var/log/auth.log | grep 'Failed password'")
+        q = p.readlines()
+        failed_logins = 0
+        for line in q:
+            print(line)
+            timestamp = self._get_date_from_log(line)
+            if self._last_failed_login_time == -1 or \
+               self._last_failed_login_time < timestamp:
+                failed_logins += 1
+                self._last_failed_login_time = timestamp
+
+        print(failed_logins)
+
+        pass
+
     def get_metrics(self):
         self._get_num_process()
         self._get_num_fds()
@@ -59,6 +113,8 @@ class Metrics:
         self._get_cpu_usage()
         self._get_cpu_load()
         self._get_ram()
+        self._get_tx_bytes()
+        self._get_rx_bytes()
 
     def save_metrics(self, file):
 
@@ -68,7 +124,8 @@ class Metrics:
             a_file.write("\n")
 
             metrics = str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) + "," +\
-                      str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram)
+                      str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + "," +\
+                      str(self.tx_bytes) + "," + str(self.rx_bytes)
 
             a_file.write(metrics)
 
@@ -77,7 +134,8 @@ class Metrics:
 
         ''' debug function '''
         metrics = str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) +\
-                  "," + str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram)
+                  "," + str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + \
+                  "," + str(self.tx_bytes) + "," + str(self.rx_bytes)
         print (metrics)
 
     def collect_system_information(self, file):
@@ -90,8 +148,12 @@ class Metrics:
         pass
 
 
+if (__name__ == '__main__'):
+    metrics = Metrics()
 
-
-#metrics = Metrics()
-#metrics.get_metrics()
-#metrics.print_metrics()
+    for i in range(1, 10):
+        #metrics.get_metrics()
+        metrics._get_failed_logins()
+        metrics.print_metrics()
+        time.sleep(2)
+        pass
