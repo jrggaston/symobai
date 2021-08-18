@@ -136,7 +136,7 @@ class Metrics:
 
             metrics = str(self.timestamp) + "," + str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) + "," +\
                       str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + "," +\
-                      str(self.tx_bytes) + "," + str(self.rx_bytes)
+                      str(self.tx_bytes) + "," + str(self.rx_bytes) + "," + str(self.failed_logins)
 
             a_file.write(metrics)
 
@@ -146,7 +146,7 @@ class Metrics:
         ''' debug function '''
         metrics = str(self.timestamp) + "," + str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) +\
                   "," + str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + \
-                  "," + str(self.tx_bytes) + "," + str(self.rx_bytes)
+                  "," + str(self.tx_bytes) + "," + str(self.rx_bytes) + "," + str(self.failed_logins)
         print (metrics)
 
     def collect_system_information(self, file):
