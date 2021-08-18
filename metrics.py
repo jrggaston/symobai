@@ -7,6 +7,7 @@ import time
 class Metrics:
 
     def __init__(self):
+        self.timestamp = 0
         self.num_process = 0
         self.num_fds = 0
         self.num_conn = 0
@@ -19,6 +20,15 @@ class Metrics:
         self.rx_bytes = 0
         self.failed_logins = 0
         self._last_failed_login_time = -1
+
+    def _get_timestamp(self):
+
+        now = datetime.datetime.now()
+        midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        seconds = (now - midnight).seconds
+        self.timestamp = seconds
+
 
     def _get_num_process(self):
         p = os.popen("ps aux | wc -l")
@@ -105,6 +115,7 @@ class Metrics:
         pass
 
     def get_metrics(self):
+        self._get_timestamp()
         self._get_num_process()
         self._get_num_fds()
         self._get_num_conn()
@@ -123,7 +134,7 @@ class Metrics:
         with open(file, "a") as a_file:
             a_file.write("\n")
 
-            metrics = str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) + "," +\
+            metrics = str(self.timestamp) + "," + str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) + "," +\
                       str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + "," +\
                       str(self.tx_bytes) + "," + str(self.rx_bytes)
 
@@ -133,7 +144,7 @@ class Metrics:
     def print_metrics(self):
 
         ''' debug function '''
-        metrics = str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) +\
+        metrics = str(self.timestamp) + "," + str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) +\
                   "," + str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + \
                   "," + str(self.tx_bytes) + "," + str(self.rx_bytes)
         print (metrics)
@@ -151,9 +162,11 @@ class Metrics:
 if (__name__ == '__main__'):
     metrics = Metrics()
 
-    for i in range(1, 10):
-        #metrics.get_metrics()
-        metrics._get_failed_logins()
-        metrics.print_metrics()
-        time.sleep(2)
-        pass
+    metrics._get_timestamp()
+
+    #for i in range(1, 10):
+    #    #metrics.get_metrics()
+    #    metrics._get_failed_logins()
+    #    metrics.print_metrics()
+    #    time.sleep(2)
+    #    pass
