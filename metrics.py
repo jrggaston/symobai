@@ -164,7 +164,9 @@ class Metrics:
 if (__name__ == '__main__'):
     metrics = Metrics()
 
-    with open("collected_data.csv", "a") as a_file:
+    data_file = "collected_data.csv"
+
+    with open(data_file, "a") as a_file:
         a_file.write("timestamp,num_process,num_fds,num_conn,num_ssh,num_active_users,cpu_usage,cpu_load,ram,tx_bytes,rx_bytes,failed_logins\n")
 
     #get data each 20 seconds, during one day
@@ -172,5 +174,5 @@ if (__name__ == '__main__'):
 
     for i in range(0, num_samples):
         metrics.get_metrics()
-        metrics.save_metrics()
+        metrics.save_metrics(data_file)
         time.sleep(20)
