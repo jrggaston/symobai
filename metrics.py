@@ -126,6 +126,7 @@ class Metrics:
         self._get_ram()
         self._get_tx_bytes()
         self._get_rx_bytes()
+        self._get_failed_logins()
 
     def save_metrics(self, file):
 
