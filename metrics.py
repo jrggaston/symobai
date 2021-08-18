@@ -110,7 +110,7 @@ class Metrics:
                 failed_logins += 1
                 self._last_failed_login_time = timestamp
 
-        print(failed_logins)
+        self.failed_logins = failed_logins
 
         pass
 
