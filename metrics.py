@@ -163,11 +163,12 @@ class Metrics:
 if (__name__ == '__main__'):
     metrics = Metrics()
 
-    metrics._get_timestamp()
+    with open("collected_data", "a") as a_file:
+        a_file.write("timestamp,num_process,num_fds,num_conn,num_ssh,num_active_users,cpu_usage,cpu_load,ram,tx_bytes,rx_bytes,failed_logins\n")
 
-    #for i in range(1, 10):
-    #    #metrics.get_metrics()
-    #    metrics._get_failed_logins()
-    #    metrics.print_metrics()
-    #    time.sleep(2)
-    #    pass
+    #get data each 20 seconds, during one day
+    num_samples = 24 * 60 * 60 / 20
+
+    for i in range(0, num_samples):
+        metrics.get_metrics()
+        time.sleep(20)
