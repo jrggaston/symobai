@@ -167,7 +167,7 @@ if (__name__ == '__main__'):
     data_file = "collected_data.csv"
 
     with open(data_file, "a") as a_file:
-        a_file.write("timestamp,num_process,num_fds,num_conn,num_ssh,num_active_users,cpu_usage,cpu_load,ram,tx_bytes,rx_bytes,failed_logins\n")
+        a_file.write("timestamp,num_process,num_fds,num_conn,num_ssh,num_active_users,cpu_usage,cpu_load,ram,tx_bytes,rx_bytes,failed_logins")
 
     #get data each 20 seconds, during one day
     num_samples = 24 * 60 * 60 // 20
