@@ -37,7 +37,7 @@ class Metrics:
     def _get_num_fds(self):
         p = os.popen("lsof | wc -l")
         self.num_fds = int(p.read())
-        print ("fds: " + str(self.num_fds))
+        #print ("fds: " + str(self.num_fds))
 
     def _get_num_conn(self):
         p = os.popen("netstat -t -u | wc -l")
@@ -71,13 +71,13 @@ class Metrics:
         with open("/sys/class/net/eth0/statistics/tx_bytes", "r") as a_file:
             self.tx_bytes = int(a_file.read())
 
-        print("tx bytes = " + str(self.tx_bytes))
+        #print("tx bytes = " + str(self.tx_bytes))
 
     def _get_rx_bytes(self):
         with open("/sys/class/net/eth0/statistics/rx_bytes", "r") as a_file:
             self.rx_bytes = int(a_file.read())
 
-        print("rx bytes = " + str(self.rx_bytes))
+        #print("rx bytes = " + str(self.rx_bytes))
 
 
     def _get_date_from_log(self, log):
@@ -103,7 +103,7 @@ class Metrics:
         q = p.readlines()
         failed_logins = 0
         for line in q:
-            print(line)
+           # print(line)
             timestamp = self._get_date_from_log(line)
             if self._last_failed_login_time == -1 or \
                self._last_failed_login_time < timestamp:
@@ -148,6 +148,7 @@ class Metrics:
         metrics = str(self.timestamp) + "," + str(self.num_process) + "," + str(self.num_fds) + "," + str(self.num_conn) + "," + str(self.num_ssh) +\
                   "," + str(self.num_active_users) + "," + str(self.cpu_usage) + "," + str(self.cpu_load) + "," + str(self.ram) + \
                   "," + str(self.tx_bytes) + "," + str(self.rx_bytes) + "," + str(self.failed_logins)
+
         print (metrics)
 
     def collect_system_information(self, file):
@@ -171,4 +172,5 @@ if (__name__ == '__main__'):
 
     for i in range(0, num_samples):
         metrics.get_metrics()
+        metrics.save_metrics()
         time.sleep(20)
