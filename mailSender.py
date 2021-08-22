@@ -33,9 +33,17 @@ class mailSender:
                     self.password = result[1].lstrip().strip("\n")
                     #print (self.password)
 
+                if line.find("defaultDest") != -1:
+                    result = line.split(":")
+                    self.dest_address = result[1].lstrip().strip("\n")
+                    #print (self.password)
+
     def send(self, dest_address, message, attachment):
 
         msg = MIMEMultipart()
+
+        if (dest_address == None):
+            dest_address = self.dest_address
 
         msg['Subject'] = 'Hello!'
         msg['From'] = self.sender_email
