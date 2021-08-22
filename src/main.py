@@ -3,6 +3,7 @@ import datetime
 import mailSender
 import metrics
 import model
+import os
 
 
 def main():
@@ -10,7 +11,9 @@ def main():
 
 
     # initialize the first model
-    system_model = model.Model("init_data.csv")
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, '../dataset/init_data.csv')
+    system_model = model.Model(filename)
 
     # start monitoring. Get the metrics once to initialize
     m = metrics.Metrics()
@@ -20,7 +23,8 @@ def main():
 
     #create the file to store the system metrics
     data_file = datetime.date.today().strftime("%Y%m%d") + "_data.csv"
-    m.initialize_data_file(data_file)
+    filename = os.path.join(dirname, '../dataset/' + data_file)
+    m.initialize_data_file(filename)
 
     '''
     get the start time of the program and set a period of one day.
@@ -33,9 +37,7 @@ def main():
 
 
     #main loop
-    #while True:
-    for i in range(1,2):
-
+    while True:
         # get the current time
         now = datetime.datetime.now()
 
@@ -50,13 +52,14 @@ def main():
 
             #create the new data_file
             data_file = datetime.date.today().strftime("%Y%m%d") + "_data.csv"
-            m.initialize_data_file(data_file)
+            filename = os.path.join(dirname, '../dataset/' + data_file)
+            m.initialize_data_file(filename)
 
             system_model.update_model(prev_data_file)
 
         #get the metrics from the system
         m.get_metrics()
-
+        
         #save the metrics in the file, this will let us to update the model
         m.save_metrics(data_file)
 
@@ -78,6 +81,8 @@ def main():
                 m.collect_system_information("log.txt")
 
                 senderObj.send(dest_address=None, message=message,attachment="log.txt")
+        else:
+            print("No anomaly detected")
 
         #wait
         time.sleep(20)
