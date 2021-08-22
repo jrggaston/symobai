@@ -59,7 +59,7 @@ def main():
 
         #get the metrics from the system
         m.get_metrics()
-        
+
         #save the metrics in the file, this will let us to update the model
         m.save_metrics(data_file)
 
@@ -81,6 +81,8 @@ def main():
                 m.collect_system_information("log.txt")
 
                 senderObj.send(dest_address=None, message=message,attachment="log.txt")
+
+                last_notification_timestamp = now
         else:
             print("No anomaly detected")
 
