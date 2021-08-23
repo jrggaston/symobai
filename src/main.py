@@ -61,7 +61,7 @@ def main():
         m.get_metrics()
 
         #save the metrics in the file, this will let us to update the model
-        m.save_metrics(data_file)
+        m.save_metrics(filename)
 
         #get the array with the last read system data
         last_sample = m.return_metrics()
