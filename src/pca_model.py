@@ -12,6 +12,7 @@ class PCAModel:
 
         self.number_of_components = number_of_components
         self.pca_model = None
+        self._pca_named_steps = None
         #self.scaler = None
         pass
 
@@ -22,6 +23,7 @@ class PCAModel:
         # PCA training. It is required to do a standarization
         self.pca_model = make_pipeline(StandardScaler(), PCA(n_components=self.number_of_components))
         self.pca_model.fit(input_data)
+        self._pca_named_steps = self.pca_model.named_steps['pca']
 
 
     def detectAnomaly(self, input_data):
