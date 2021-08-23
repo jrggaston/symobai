@@ -197,6 +197,7 @@ class Metrics:
         if os.path.isfile(data_file) == False:
             with open(data_file, "a") as a_file:
                 a_file.write(self.header)
+                a_file.write("\n")
                 self.file = data_file
 
 
