@@ -53,20 +53,3 @@ class PCAModel:
         return anomaly
 
 
-if (__name__ == '__main__'):
-    datos = pd.read_csv("collected_data2.csv")
-
-
-    systemPCA = PCAModel(len(datos.columns)-4)
-    systemPCA.trainModel(datos)
-
-    wrong_data = [random.uniform(0, 1) * 10 for i in range(0, 12)]
-    dframe_test = pd.DataFrame([wrong_data], columns=datos.columns)
-
-    #for i in range(0, len(datos.index)):
-        #systemPCA.detectAnomaly(datos.iloc[[i]])
-    #print ("datosok")
-    #print(systemPCA.detectAnomaly(datos.iloc[[0]]))
-    #print("datos nok")
-    #print(systemPCA.detectAnomaly((dframe_test)))
-

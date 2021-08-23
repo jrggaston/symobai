@@ -46,25 +46,4 @@ class IsolationForestModel:
         return anomaly
 
 
-if (__name__ == '__main__'):
-
-
-    datos_X = pd.read_csv("collected_data2.csv")
-
-    systemIsFo = IsolationForestModel()
-    systemIsFo.trainModel(datos_X)
-
-    for i in range (0, 10):
-        datos = datos_X.iloc[[i]].copy()
-
-        #datos.loc[i, 'tx_bytes'] = 10000
-        datos.loc[i, 'rx_bytes'] = 10000
-        datos.loc[i, 'timestamp'] = 0
-
-
-
-        #print(datos)
-        val = systemIsFo.modelData(datos)
-        print(val)
-
 

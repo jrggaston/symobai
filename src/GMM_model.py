@@ -66,17 +66,3 @@ class GMMModel:
 
         return anomaly
 
-
-if (__name__ == '__main__'):
-    datos = pd.read_csv("collected_data2.csv")
-
-
-    systemGMM = GMMModel(20)
-    systemGMM.trainModel(datos)
-
-    ok_data = [10, 167, 26782, 1, 0, 1, 0.2, 4.5, 38.2, 608.0, 4090.0, 0]
-    wrong_data = [random.uniform(0, 1) * 10 for i in range(0, 12)]
-    dframe_test = pd.DataFrame([wrong_data], columns=datos.columns)
-    result = systemGMM.modelData(dframe_test)
-
-    print (result)
