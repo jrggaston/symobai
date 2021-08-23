@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-from matplotlib import style
+
 import pca_model
 from sklearn.model_selection import train_test_split
 
