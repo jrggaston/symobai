@@ -5,6 +5,8 @@ import random
 import os
 import GMM_model
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
@@ -19,6 +21,21 @@ train, test = train_test_split(datos, test_size=0.2)
 systemGMM = GMM_model.GMMModel(20)
 systemGMM.trainModel(train)
 
+
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(7, 3.5))
+sns.distplot(
+    systemGMM.gmmModel.score_samples(X=train),
+    hist    = False,
+    rug     = True,
+    color   = 'blue',
+    kde_kws = {'shade': True, 'linewidth': 1},
+    ax      = ax
+)
+
+ax.set_title('Distribución predicciones')
+ax.set_xlabel('Logaritmo densidad de probabilidad');
+plt.draw()
+plt.show()
 
 count = 0
 for i in range(0, len(test.index)):
