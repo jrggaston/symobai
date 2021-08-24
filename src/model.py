@@ -54,8 +54,13 @@ class Model():
             self.gmm = GMM_model.GMMModel(20)
             self.gmm.trainModel(train_dataset)
 
+            result = True
+
         else:
             raise("ERROR: update model requires a csv as input file to train the model")
+            result = False
+
+        return result
 
     def get_logs(self):
 

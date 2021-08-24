@@ -48,14 +48,24 @@ def main():
             #save the new timestamp
             start_time = now
             #save the previous data to update the model
-            prev_data_file = data_file
+            prev_data_file = filename
 
             #create the new data_file
             data_file = datetime.date.today().strftime("%Y%m%d") + "_data.csv"
             filename = os.path.join(dirname, '../dataset/' + data_file)
             m.initialize_data_file(filename)
 
-            system_model.update_model(prev_data_file)
+            if (system_model.update_model(prev_data_file) == True):
+                message = """ **** INTO: System model updated **** \n\n\n"""
+
+                # get the system information
+                m.collect_system_information(prev_data_file)
+
+                try:
+                    senderObj.send(dest_address=None, message=message, attachment="log.txt")
+                    last_notification_timestamp = now
+                except:
+                    print("error sending mail")
 
         #get the metrics from the system
         m.get_metrics()
