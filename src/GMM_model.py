@@ -62,6 +62,7 @@ class GMMModel:
 
         log_test = self.gmmModel.score_samples(X=input_data)
         if (log_test < self._min_prob):
+            print("log is " + str(log_test) + " and min prob is: "+ str(self._min_prob))
             anomaly = True
 
         return anomaly
