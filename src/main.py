@@ -58,12 +58,8 @@ def main():
             if (system_model.update_model(prev_data_file) == True):
                 message = """ **** INTO: System model updated **** \n\n\n"""
 
-                # get the system information
-                m.collect_system_information(prev_data_file)
-
                 try:
-                    senderObj.send(dest_address=None, message=message, attachment="log.txt")
-                    last_notification_timestamp = now
+                    senderObj.send(dest_address=None, message=message, attachment=filename)
                 except:
                     print("error sending mail")
 
