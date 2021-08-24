@@ -83,7 +83,10 @@ def main():
                 message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
                 #get the system information
-                m.collect_system_information("log.txt")
+
+                log_filename = "log.txt"
+                log_file = os.path.join(dirname, '../logs/' + log_filename)
+                m.collect_system_information(log_file)
 
                 try:
                     senderObj.send(dest_address=None, message=message,attachment="log.txt")
