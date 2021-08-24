@@ -74,7 +74,7 @@ def main():
 
             #just send one notification per hour
             if (last_notification_timestamp + datetime.timedelta(hours=1)) < now:
-                message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + model.get_logs()
+                message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
                 #get the system information
                 m.collect_system_information("log.txt")
