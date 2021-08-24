@@ -40,10 +40,23 @@ class IsolationForestModel:
 
         prediction = self.isFo.predict(X=input_data)
 
+        score = self.isFo.score_samples(X=input_data)
+
+
         if (prediction == -1):
             anomaly = True
+
+        self._last_prediction_log = """ *** PCA PREDICTION REPORT *** """
+        self._last_prediction_log += """\n Input Data: \n"""
+        self._last_prediction_log += input_data.to_string()
+        self._last_prediction_log += """\n\n Anomaly Score for the input data: \n"""
+        self._last_prediction_log += str(score)
+        self._last_prediction_log += """\n\n Anomaly Result: \n"""
+        self._last_prediction_log += str(anomaly)
+        self._last_prediction_log += """\n\n"""
 
         return anomaly
 
 
-
+    def get_log(self):
+        return self._last_prediction_log

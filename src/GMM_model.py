@@ -10,6 +10,7 @@ class GMMModel:
         self._max_number_of_components = number_of_components
         self._covariance_type = ['spherical', 'tied', 'diag', 'full']
         self._min_prob = None
+        self._last_prediction_log = ""
 
     def _GMMModel(self, input_data, components, covariance_type):
 
@@ -62,8 +63,22 @@ class GMMModel:
 
         log_test = self.gmmModel.score_samples(X=input_data)
         if (log_test < self._min_prob):
-            print("log is " + str(log_test) + " and min prob is: "+ str(self._min_prob))
+            #print("log is " + str(log_test) + " and min prob is: "+ str(self._min_prob))
             anomaly = True
+
+        self._last_prediction_log = """ *** GMM PREDICTION REPORT *** """
+        self._last_prediction_log += """\n Input Data: \n"""
+        self._last_prediction_log += input_data.to_string()
+        self._last_prediction_log += """\n\n Probability log of the prediction: \n"""
+        self._last_prediction_log +=  str(log_test)
+        self._last_prediction_log += """\n\n Min Prob is : \n"""
+        self._last_prediction_log += str(self._min_prob)
+        self._last_prediction_log += """\n\n Anomaly Result: \n"""
+        self._last_prediction_log += str(anomaly)
+        self._last_prediction_log += """\n\n"""
+
 
         return anomaly
 
+    def get_log(self):
+        return self._last_prediction_log

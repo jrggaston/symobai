@@ -13,6 +13,7 @@ class PCAModel:
         self.number_of_components = number_of_components
         self.pca_model = None
         self._pca_named_steps = None
+        self._last_prediction_log = ""
         #self.scaler = None
         pass
 
@@ -46,6 +47,18 @@ class PCAModel:
         sum_error = error_percentage.iloc[0].sum()
 
         #print(sum_error)
+        self._last_prediction_log = """ *** PCA PREDICTION REPORT *** """
+        self._last_prediction_log += """\n Input Data: \n"""
+        self._last_prediction_log += input_data.to_string()
+        self._last_prediction_log += """\n\n Transformed Data: \n"""
+        self._last_prediction_log +=  modeled.to_string()
+        self._last_prediction_log += """\n\n Error: \n"""
+        self._last_prediction_log += error.to_string()
+        self._last_prediction_log += """\n\n Accumulated Error: \n"""
+        self._last_prediction_log += str(sum_error)
+        self._last_prediction_log += """\n\n Anomaly Result: \n"""
+        self._last_prediction_log += str(anomaly)
+        self._last_prediction_log += """\n\n"""
 
         #this threshold is empiric
         if (sum_error > 10):
@@ -54,4 +67,6 @@ class PCAModel:
 
         return anomaly
 
+    def get_log(self):
+        return self._last_prediction_log
 
