@@ -187,7 +187,7 @@ class Metrics:
         This method should retreive the system information and store it in a file when
         an anomaly is detected. The file with the data may be attached to the email notification
         '''
-        if os.path.exi("getSystemInfo.sh"):
+        if os.path.exists("getSystemInfo.sh"):
             subprocess.call(['./getSystemInfo.sh', log_file])
         else:
             with open(log_file, "w") as a_file:
