@@ -11,7 +11,7 @@ class PCAModel:
     def __init__(self, number_of_components):
 
         self.number_of_components = number_of_components
-        self.pca_model = None
+        self.model = None
         self._pca_named_steps = None
         self._last_prediction_log = ""
         #self.scaler = None
@@ -22,9 +22,9 @@ class PCAModel:
         #self.scaler = StandardScaler().fit(input_data)
 
         # PCA training. It is required to do a standarization
-        self.pca_model = make_pipeline(StandardScaler(), PCA(n_components=self.number_of_components))
-        self.pca_model.fit(input_data)
-        self._pca_named_steps = self.pca_model.named_steps['pca']
+        self.model = make_pipeline(StandardScaler(), PCA(n_components=self.number_of_components))
+        self.model.fit(input_data)
+        self._pca_named_steps = self.model.named_steps['pca']
 
 
     def detectAnomaly(self, input_data):
@@ -33,10 +33,10 @@ class PCAModel:
 
         index_aux = ["PC" + str(i) for i in range(1, self.number_of_components + 1)]
 
-        transform_data = self.pca_model.transform(X=input_data)
+        transform_data = self.model.transform(X=input_data)
         transform_data = pd.DataFrame(transform_data, columns=index_aux, index=input_data.index)
 
-        modeled = self.pca_model.inverse_transform(X=transform_data)
+        modeled = self.model.inverse_transform(X=transform_data)
         modeled = pd.DataFrame(modeled, columns=input_data.columns,index=input_data.index )
 
         #error_std = abs(self.scaler.transform(input_data)**2 - self.scaler.transform(modeled)**2)

@@ -6,7 +6,7 @@ class GMMModel:
 
     def __init__(self, number_of_components):
 
-        self.gmmModel = None
+        self.model = None
         self._max_number_of_components = number_of_components
         self._covariance_type = ['spherical', 'tied', 'diag', 'full']
         self._min_prob = None
@@ -51,9 +51,9 @@ class GMMModel:
 
         cov_type, comp = self._GMMAnalysis(input_data)
 
-        self.gmmModel = self._GMMModel(input_data, comp, cov_type)
+        self.model = self._GMMModel(input_data, comp, cov_type)
 
-        log_prob = self.gmmModel.score_samples(X=input_data)
+        log_prob = self.model.score_samples(X=input_data)
         self._min_prob = min(log_prob)
 
 
@@ -61,7 +61,7 @@ class GMMModel:
 
         anomaly = False
 
-        log_test = self.gmmModel.score_samples(X=input_data)
+        log_test = self.model.score_samples(X=input_data)
         if (log_test < self._min_prob):
             #print("log is " + str(log_test) + " and min prob is: "+ str(self._min_prob))
             anomaly = True

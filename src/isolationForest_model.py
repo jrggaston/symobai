@@ -7,7 +7,7 @@ class IsolationForestModel:
 
     def __init__(self):
 
-        self.isFo = None
+        self.model = None
         self.quantile_01 = 0
         self.contamination = 0.01
 
@@ -26,10 +26,10 @@ class IsolationForestModel:
 
     def trainModel(self, train_data):
 
-        self.isFo = IsolationForest(n_estimators=1000, max_samples='auto', contamination=self.contamination, n_jobs=-1, random_state=123)
+        self.model = IsolationForest(n_estimators=1000, max_samples='auto', contamination=self.contamination, n_jobs=-1, random_state=123)
         train_contaminated_data = self._add_contaminated_data(train_data)
-        self.isFo.fit(X=train_contaminated_data)
-        anomaly_score = self.isFo.score_samples(X=train_contaminated_data)
+        self.model.fit(X=train_contaminated_data)
+        anomaly_score = self.model.score_samples(X=train_contaminated_data)
         self.quantile_01 = np.quantile(anomaly_score, q=self.contamination)
 
 
@@ -38,9 +38,9 @@ class IsolationForestModel:
 
         anomaly = False
 
-        prediction = self.isFo.predict(X=input_data)
+        prediction = self.model.predict(X=input_data)
 
-        score = self.isFo.score_samples(X=input_data)
+        score = self.model.score_samples(X=input_data)
 
 
         if (prediction == -1):
