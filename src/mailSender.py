@@ -62,8 +62,15 @@ class mailSender:
 
         context = ssl.create_default_context()
         with smtplib.SMTP_SSL(self.smtp_server, self.port, context=context) as server:
-            server.login(self.sender_email, self.password)
-            server.sendmail(self.sender_email, dest_address, msg.as_string())
+            try:
+                server.login(self.sender_email, self.password)
+                server.sendmail(self.sender_email, dest_address, msg.as_string())
+                result = True
+            except:
+                print("Error sending mail.")
+                result = False
+
+        return result
 
 #message = """This message is sent from Python."""
 

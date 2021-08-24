@@ -80,11 +80,13 @@ def main():
                 #get the system information
                 m.collect_system_information("log.txt")
 
-                senderObj.send(dest_address=None, message=message,attachment="log.txt")
-
-                last_notification_timestamp = now
-        else:
-            print("No anomaly detected")
+                try:
+                    senderObj.send(dest_address=None, message=message,attachment="log.txt")
+                    last_notification_timestamp = now
+                except:
+                    print("error sending mail")
+        #else:
+        #    print("No anomaly detected")
 
         #wait
         time.sleep(20)
