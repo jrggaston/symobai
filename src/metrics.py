@@ -189,7 +189,7 @@ class Metrics:
         '''
         if os.path.exi("getSystemInfo.sh"):
             subprocess.call(['./getSystemInfo.sh', log_file])
-        else
+        else:
             with open(log_file, "w") as a_file:
                 a_file.write("System information should be here, unable to recover it")
 
