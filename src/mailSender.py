@@ -45,7 +45,7 @@ class mailSender:
         if (dest_address == None):
             dest_address = self.dest_address
 
-        msg['Subject'] = 'Hello!'
+        msg['Subject'] = 'Symobai ALERT!'
         msg['From'] = self.sender_email
         msg['To'] = ", ".join(dest_address)
 

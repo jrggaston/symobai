@@ -57,7 +57,12 @@ class Model():
         else:
             raise("ERROR: update model requires a csv as input file to train the model")
 
+    def get_logs(self):
 
+
+        log = self.pca.get_log() + "\n\n" + self.isolation_forest.get_log() + "\n\n" + self.gmm.get_log()
+
+        return log
 
 
 
