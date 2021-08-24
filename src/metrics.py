@@ -185,7 +185,7 @@ class Metrics:
         This method should retreive the system information and store it in a file when
         an anomaly is detected. The file with the data may be attached to the email notification
         '''
-        with open(log_file, "a") as a_file:
+        with open(log_file, "w") as a_file:
             a_file.write("System information should be here")
 
 

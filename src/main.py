@@ -26,6 +26,10 @@ def main():
     filename = os.path.join(dirname, '../dataset/' + data_file)
     m.initialize_data_file(filename)
 
+    logs_dir = os.path.join(dirname, '../logs')
+    if (os.path.exists(logs_dir) == False):
+        os.mkdir(logs_dir, 0755)
+
     '''
     get the start time of the program and set a period of one day.
     after one day, the data will be stored in an new file, and we will
@@ -83,13 +87,12 @@ def main():
                 message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
                 #get the system information
-
                 log_filename = "log.txt"
-                log_file = os.path.join(dirname, '../logs/' + log_filename)
+                log_file = os.path.join(logs_dir, '/' + log_filename)
                 m.collect_system_information(log_file)
 
                 try:
-                    senderObj.send(dest_address=None, message=message,attachment="log.txt")
+                    senderObj.send(dest_address=None, message=message,attachment=log_filename)
                     last_notification_timestamp = now
                 except:
                     print("error sending mail")
