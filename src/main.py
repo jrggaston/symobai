@@ -30,6 +30,8 @@ def main():
     if (os.path.exists(logs_dir) == False):
         os.mkdir(logs_dir, 0o755)
 
+    log_filename = "log.txt"
+    log_file = os.path.join(logs_dir, log_filename)
     '''
     get the start time of the program and set a period of one day.
     after one day, the data will be stored in an new file, and we will
@@ -87,8 +89,6 @@ def main():
                 message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
                 #get the system information
-                log_filename = "log.txt"
-                log_file = os.path.join(logs_dir, '/' + log_filename)
                 m.collect_system_information(log_file)
 
                 try:
