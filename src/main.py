@@ -28,7 +28,7 @@ def main():
 
     logs_dir = os.path.join(dirname, '../logs')
     if (os.path.exists(logs_dir) == False):
-        os.mkdir(logs_dir, 0755)
+        os.mkdir(logs_dir, 755)
 
     '''
     get the start time of the program and set a period of one day.
