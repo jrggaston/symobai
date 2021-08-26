@@ -95,11 +95,13 @@ def main():
             # get the system information
             m.collect_system_information(log_file)
 
+            message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
+            with open(log_file, "a") as a_file:
+                a_file.write(message)
 
             #just send one notification per hour
             if (last_notification_timestamp + datetime.timedelta(hours=1)) < now:
-                message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
 
                 try:
                     senderObj.send(dest_address=None, message=message,attachment=log_file)
