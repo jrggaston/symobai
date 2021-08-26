@@ -41,6 +41,7 @@ def main():
     data_period = datetime.timedelta(days=1)
     last_notification_timestamp = start_time - datetime.timedelta(hours=2)
 
+    anomaly_idx = 0
 
     #main loop
     while True:
@@ -84,12 +85,21 @@ def main():
         anomaly = system_model.get_prediction(last_sample)
         if anomaly == True:
 
+            log_filename = "log" + str(anomaly_idx) + ".txt"
+            log_file = os.path.join(logs_dir, log_filename)
+
+            anomaly_idx = anomaly_idx + 1
+            if anomaly_idx == 100:
+                anomaly_idx = 0
+
+            # get the system information
+            m.collect_system_information(log_file)
+
+
+
             #just send one notification per hour
             if (last_notification_timestamp + datetime.timedelta(hours=1)) < now:
                 message = """ **** WARNING: The system has detected an anomaly **** \n\n\n""" + system_model.get_logs()
-
-                #get the system information
-                m.collect_system_information(log_file)
 
                 try:
                     senderObj.send(dest_address=None, message=message,attachment=log_file)
