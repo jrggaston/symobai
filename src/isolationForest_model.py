@@ -46,7 +46,7 @@ class IsolationForestModel:
         if (prediction == -1):
             anomaly = True
 
-        self._last_prediction_log = """ *** PCA PREDICTION REPORT *** """
+        self._last_prediction_log = """ *** ISOLATION FOREST PREDICTION REPORT *** """
         self._last_prediction_log += """\n Input Data: \n"""
         self._last_prediction_log += input_data.to_string()
         self._last_prediction_log += """\n\n Anomaly Score for the input data: \n"""
