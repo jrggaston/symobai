@@ -99,7 +99,7 @@ class Metrics:
             self.rx_bytes = 0
             if (self._last_rx_bytes != -1):
                 if (rx_bytes > self._last_rx_bytes):
-                    self.tx_bytes = rx_bytes - self._last_rx_bytes
+                    self.rx_bytes = rx_bytes - self._last_rx_bytes
 
             self._last_rx_bytes = rx_bytes
 
