@@ -47,7 +47,7 @@ class Metrics:
         self.num_process = int(p.read())
 
     def _get_num_fds(self):
-        p = os.popen("lsof | wc -l")
+        p = os.popen("lsof -e /run/user/1000/gvfs | wc -l")
         self.num_fds = int(p.read())
         #print ("fds: " + str(self.num_fds))
 
