@@ -48,28 +48,6 @@ def main():
         # get the current time
         now = datetime.datetime.now()
 
-        # if one day has passed, create a new file to store the data and save the previous file to
-        # train the model again
-        if (start_time + data_period) < now:
-
-            #save the new timestamp
-            start_time = now
-            #save the previous data to update the model
-            prev_data_file = filename
-
-            #create the new data_file
-            data_file = datetime.date.today().strftime("%Y%m%d") + "_data.csv"
-            filename = os.path.join(dirname, '../dataset/' + data_file)
-            m.initialize_data_file(filename)
-
-            if (system_model.update_model(prev_data_file) == True):
-                message = """ **** INFO: System model updated **** \n\n\n"""
-
-                try:
-                    senderObj.send(dest_address=None, message=message, attachment=filename)
-                except:
-                    print("error sending mail")
-
         #get the metrics from the system
         m.get_metrics()
 
@@ -110,6 +88,28 @@ def main():
                     print("error sending mail")
         #else:
         #    print("No anomaly detected")
+
+         # if one day has passed, create a new file to store the data and save the previous file to
+        # train the model again
+        if (start_time + data_period) < now:
+
+            # save the new timestamp
+            start_time = now
+            # save the previous data to update the model
+            prev_data_file = filename
+
+            # create the new data_file
+            data_file = datetime.date.today().strftime("%Y%m%d") + "_data.csv"
+            filename = os.path.join(dirname, '../dataset/' + data_file)
+            m.initialize_data_file(filename)
+
+            if (system_model.update_model(prev_data_file) == True):
+                message = """ **** INFO: System model updated **** \n\n\n"""
+
+                try:
+                    senderObj.send(dest_address=None, message=message, attachment=prev_data_file)
+                except:
+                    print("error sending mail")
 
         #wait
         time.sleep(20)
