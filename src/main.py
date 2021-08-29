@@ -9,10 +9,9 @@ import os
 def main():
 
 
-
     # initialize the first model
     dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, '../dataset/init_data.csv')
+    filename = os.path.join(dirname, '../dataset/20210827_data.csv')
     system_model = model.Model(filename)
 
     # start monitoring. Get the metrics once to initialize
