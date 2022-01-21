@@ -36,7 +36,7 @@ class Model():
             if gmm_prediction == True:
                 print("ERROR: GMM")
 
-        return pca_prediction or isolationForest_prediction or gmm_prediction
+        return pca_prediction or isolationForest_prediction #or gmm_prediction
 
     def update_model(self, train_file):
 
